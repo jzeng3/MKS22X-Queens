@@ -5,6 +5,8 @@ public class QueenBoard{
     System.out.println(testBoard);
     testBoard.addQueen(0,0);
     System.out.println(testBoard);
+    testBoard.removeQueen(0,0);
+    System.out.println(testBoard);
   }
 
   private int[][] board;
@@ -74,6 +76,15 @@ public class QueenBoard{
     return true;
   }
   private boolean removeQueen(int r, int c){
+    board[r][c] = 0;
+    for (int i = 0; i < board.length; i++ ){
+      for (int j = 0; j < board[0].length; j++){
+        if (!(r == i && c == j) && (r == i || c == j || Math.abs(r-i) == Math.abs(c-j))){
+          board[i][j] -= 1;
+        }
+       System.out.print(board[i][j] + ", ");
+      }
+    }
     return true;
   }
 
