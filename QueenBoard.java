@@ -1,6 +1,9 @@
+import java.util.*;
 public class QueenBoard{
   public static void main(String[] args){
-    QueenBoard testBoard = new QueenBoard(5);
+    QueenBoard testBoard = new QueenBoard(2);
+    System.out.println(testBoard);
+    testBoard.addQueen(0,0);
     System.out.println(testBoard);
   }
 
@@ -25,11 +28,11 @@ public class QueenBoard{
       String boardStr = "";
       for (int i = 0; i < board.length; i++){
         for (int j = 0; j < board[0].length; j++){
-          if (board[i][j] == 0){
-            boardStr += "_";
+          if (board[i][j] >= 0){
+            boardStr += "_ ";
           }
-          else{
-            boardStr += "Q";
+          else if (board[i][j] == -1){
+            boardStr += "Q ";
           }
           if (j == board[0].length -1){
             boardStr += "\n";
@@ -58,6 +61,16 @@ public class QueenBoard{
     }
 
   private boolean addQueen(int r, int c){
+    board[r][c] = -1;
+    // when queen is added, mark the spots that it could target
+    for (int i = 0; i < board.length; i++ ){
+      for (int j = 0; j < board[0].length; j++){
+        if (!(r == i && c == j) && (r == i || c == j || Math.abs(r-i) == Math.abs(c-j))){
+          board[i][j] += 1;
+        }
+      //  System.out.print(board[i][j] + ", ");
+      }
+    }
     return true;
   }
   private boolean removeQueen(int r, int c){
