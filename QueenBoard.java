@@ -7,6 +7,9 @@ public class QueenBoard{
     System.out.println(testBoard);
     testBoard.removeQueen(0,0);
     System.out.println(testBoard);
+    testBoard.solve();
+    System.out.println(testBoard.solve());
+    System.out.println(testBoard);
   }
 
   private int[][] board;
@@ -51,7 +54,7 @@ public class QueenBoard{
     *@throws IllegalStateException when the board starts with any non-zero value
     */
     public boolean solve(){
-      return false;
+      return solveH(0, 0, 0);
     }
 
     /**
@@ -61,6 +64,25 @@ public class QueenBoard{
     public int countSolutions(){
       return 0;
     }
+  private boolean solveH(int row, int column, int numQueens){
+    // return true if all queens fit on board
+     if (row == board.length && numQueens == board.length){
+       return true;
+     }
+     // else loop through each row
+     else{
+       for (int i = 0; i < board.length && column < board[0].length; i++){
+         if (board[i][column] == 0){
+           addQueen(row, column);
+           solveH(row + 1, column + 1, numQueens + 1);
+         }
+         else{
+           solveH(row, column + 1, numQueens);
+         }
+       }
+     }
+     return false;
+  }
 
   private boolean addQueen(int r, int c){
     board[r][c] = -1;
@@ -82,7 +104,7 @@ public class QueenBoard{
         if (!(r == i && c == j) && (r == i || c == j || Math.abs(r-i) == Math.abs(c-j))){
           board[i][j] -= 1;
         }
-       System.out.print(board[i][j] + ", ");
+      //  System.out.print(board[i][j] + ", ");
       }
     }
     return true;
