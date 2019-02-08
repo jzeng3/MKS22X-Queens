@@ -1,7 +1,7 @@
 import java.util.*;
 public class QueenBoard{
   public static void main(String[] args){
-    QueenBoard testBoard = new QueenBoard(2);
+    QueenBoard testBoard = new QueenBoard(3);
     System.out.println(testBoard);
     testBoard.addQueen(0,0);
     System.out.println(testBoard);
@@ -74,10 +74,12 @@ public class QueenBoard{
        for (int i = 0; i < board.length && column < board[0].length; i++){
          if (board[i][column] == 0){
            addQueen(row, column);
+           System.out.println("added queen at "+ row + "  " + column);
            solveH(row + 1, column + 1, numQueens + 1);
          }
          else{
            solveH(row, column + 1, numQueens);
+           System.out.println("solve at "+ row + "  " + column);
          }
        }
      }
@@ -92,7 +94,7 @@ public class QueenBoard{
         if (!(r == i && c == j) && (r == i || c == j || Math.abs(r-i) == Math.abs(c-j))){
           board[i][j] += 1;
         }
-      //  System.out.print(board[i][j] + ", ");
+        System.out.print(board[i][j] + ", ");
       }
     }
     return true;
@@ -104,7 +106,7 @@ public class QueenBoard{
         if (!(r == i && c == j) && (r == i || c == j || Math.abs(r-i) == Math.abs(c-j))){
           board[i][j] -= 1;
         }
-      //  System.out.print(board[i][j] + ", ");
+        System.out.print(board[i][j] + ", ");
       }
     }
     return true;
