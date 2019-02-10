@@ -1,15 +1,20 @@
 import java.util.*;
 public class QueenBoard{
   public static void main(String[] args){
-    QueenBoard testBoard = new QueenBoard(1);
+    QueenBoard testBoard = new QueenBoard(4);
   /*  System.out.println(testBoard);
     testBoard.addQueen(0,0);
     System.out.println(testBoard);
     testBoard.removeQueen(0,0);
     System.out.println(testBoard);
     testBoard.solve();*/
+    testBoard.addQueen(0,0);
+    System.out.println(testBoard.toStringDebug());
+    testBoard.removeQueen(0,0);
+    System.out.println(testBoard.toStringDebug());
     System.out.println(testBoard.solve());
     System.out.println(testBoard);
+    System.out.println(testBoard.toStringDebug());
   }
 
   private int[][] board;
@@ -47,6 +52,19 @@ public class QueenBoard{
       return boardStr;
     }
 
+    public String toStringDebug(){
+      String boardStr = "";
+      for (int i = 0; i < board.length; i++){
+        for (int j = 0; j < board[0].length; j++){
+            boardStr += board[i][j] + " ";
+          if (j == board[0].length -1){
+            boardStr += "\n";
+          }
+        }
+      }
+      return boardStr;
+    }
+
 
     /**
     *@return false when the board is not solveable and leaves the board filled with zeros;
@@ -54,7 +72,7 @@ public class QueenBoard{
     *@throws IllegalStateException when the board starts with any non-zero value
     */
     public boolean solve(){
-      return solveH(0, 0, 0);
+      return solveH(0, 0, board.length);
     }
 
     /**
@@ -64,28 +82,24 @@ public class QueenBoard{
     public int countSolutions(){
       return 0;
     }
-  private boolean solveH(int row, int column, int queenInRow, int numQueensLeft){
+  private boolean solveH(int rowStart, int colStart, int numQueensLeft){
     // return true if all queens fit on board
-     if (numQueensLeft == 0){
-       return true;
-     }
+    if (rowStart >= board.length){
+      return numQueensLeft == 0;
+    }
      // else loop through each row
      else{
-       addQueen(row, column);
-       for (int r = 0; r < row; r++){
-         for (int c = 0; c < board[0].length; c++){
-           // remove queen if targeted
-           if (!(r == i && c == j) && (r == i || c == j || Math.abs(r-i) == Math.abs(c-j)){
-             if (board[r][c] != 0){
-               removeQueen(row, column);
-               solveH(row, column + 1);
-             }
-           }
+       for (int i = 0; i < board.length; i++){
+         if (board[rowStart][colStart + i] == 0){
+           addQueen(rowStart, colStart + i);
+           solveH(rowStart + 1, colStart, numQueensLeft - 1);
          }
+
+         }
+
+
        }
-       }
-     }
-     return false;
+    return false;
   }
 
   private boolean addQueen(int r, int c){
@@ -93,7 +107,7 @@ public class QueenBoard{
     // when queen is added, mark the spots that it could target
     for (int i = 0; i < board.length; i++ ){
       for (int j = 0; j < board[0].length; j++){
-        if (!(r == i && c == j) && (r == i || c == j || Math.abs(r-i) == Math.abs(c-j))){
+        if (board[i][j] != -1 && (r == i || Math.abs(r-i) == Math.abs(c-j))){
           board[i][j] += 1;
         }
     //    System.out.print(board[i][j] + ", ");
@@ -105,7 +119,7 @@ public class QueenBoard{
     board[r][c] = 0;
     for (int i = 0; i < board.length; i++ ){
       for (int j = 0; j < board[0].length; j++){
-        if (!(r == i && c == j) && (r == i || c == j || Math.abs(r-i) == Math.abs(c-j))){
+        if ( c == j || Math.abs(r-i) == Math.abs(c-j)){
           board[i][j] -= 1;
         }
       //  System.out.print(board[i][j] + ", ");
