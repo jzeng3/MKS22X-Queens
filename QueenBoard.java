@@ -1,7 +1,9 @@
 import java.util.*;
 public class QueenBoard{
   public static void main(String[] args){
-    QueenBoard testBoard = new QueenBoard(4);
+    //QueenBoard testBoard = new QueenBoard(4);
+    // QueenBoard testBoard = new QueenBoard(5);
+    QueenBoard testBoard = new QueenBoard(6);
   /*  System.out.println(testBoard);
     testBoard.addQueen(0,0);
     System.out.println(testBoard);
@@ -92,6 +94,7 @@ public class QueenBoard{
         for (int row = 0; row < board.length; row++){
           // check if can add queen at current row, column and add
           if (addQueen(row, colStart)){
+            addQueen(row, colStart);
             // check if can SOLVE the rest of the board
             if (solveH(colStart+1, numQueensLeft-1)){
               return true;
@@ -100,7 +103,10 @@ public class QueenBoard{
               // otherwise, remove current queen and
               // move down a row from the previous column
               removeQueen(row, colStart);
-              return solveH(colStart-1, numQueensLeft);
+              if (colStart >= 1){
+                System.out.println("row " + row + "colStart " + colStart);
+                 return solveH(colStart-1, numQueensLeft);
+               }
             }
           }
         }
