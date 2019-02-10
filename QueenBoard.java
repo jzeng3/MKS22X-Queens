@@ -8,13 +8,13 @@ public class QueenBoard{
     testBoard.removeQueen(0,0);
     System.out.println(testBoard);
     testBoard.solve();*/
-    testBoard.addQueen(1,3);
+    testBoard.addQueen(1,2);
     System.out.println(testBoard.toStringDebug());
-    testBoard.removeQueen(1,3);
+    testBoard.removeQueen(1,2);
     System.out.println(testBoard.toStringDebug());
-    System.out.println(testBoard.solve());
+    /*System.out.println(testBoard.solve());
     System.out.println(testBoard);
-    System.out.println(testBoard.toStringDebug());
+    System.out.println(testBoard.toStringDebug());*/
   }
 
   private int[][] board;
@@ -120,26 +120,34 @@ public class QueenBoard{
     int col = c;
     // check if there is a queen
     if (board[r][c] == -1){
+      // clear queen
       board[r][c] = 0;
-      // clear the targets of the queen's row
       for (int i = 0; i < board[r].length; i++){
-        if (i != c && board[r][i] != -1){
+        // this row, excluding queen
+        if (i != c){
           board[r][i] -= 1;
         }
+        // back a row, back a column
+        if ((r - i >= 0 && c - i >= 0) && board[r - i][c - i] > 0){
+          board[r - i][c - i] -= 1;
+        }
+        // back a row, forward a column
+        if ((r - i >= 0 && c + i < board.length) && board[r - i][c + i] > 0){
+          board[r - i][c + i] -= 1;
+        }
+        // forward a row, back a column
+        if ((r + i < board.length && c - i >= 0) && board[r + i][c - i] > 0){
+          board[r + i][c - i] -= 1;
+        }
+        // forward a row, forward a column
+        if ((r + i < board.length && c + i < board.length) && board[r + i][c + i] > 0){
+          board[r + i][c + i] -= 1;
+        }
       }
-      // move back on the board, along the diagonal
-      if (r != 0){
-        row = 0;
-        col = c-r;
-        System.out.println("row " + row + " col " + col);
-      }
-      // remove targets along the diagonal, excluding queen's original position
-      for (int i = 0; col + i < board[r].length; i++){
-        if (row != row + i){
-        board[row+i][col+i] -= 1;}
-      }
-    }
+
     return true;
-  }
+   }
+   return false;
+ }
 
 }
