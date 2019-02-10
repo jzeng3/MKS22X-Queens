@@ -3,7 +3,7 @@ public class QueenBoard{
   public static void main(String[] args){
     //QueenBoard testBoard = new QueenBoard(4);
     // QueenBoard testBoard = new QueenBoard(5);
-    QueenBoard testBoard = new QueenBoard(6);
+    QueenBoard testBoard = new QueenBoard(10);
   /*  System.out.println(testBoard);
     testBoard.addQueen(0,0);
     System.out.println(testBoard);
@@ -17,6 +17,11 @@ public class QueenBoard{
     System.out.println(testBoard.solve());
     System.out.println(testBoard);
     System.out.println(testBoard.toStringDebug());
+    try{System.out.println(testBoard.solve());
+    }catch(IllegalStateException e){
+      System.out.println(testBoard);
+      System.out.println("Illegal state exception caught in main");
+    }
   }
 
   private int[][] board;
@@ -74,6 +79,11 @@ public class QueenBoard{
     *@throws IllegalStateException when the board starts with any non-zero value
     */
     public boolean solve(){
+      for (int i = 0; i < board.length; i++){
+        if (board[0][i] != 0){
+          throw new IllegalStateException();
+        }
+      }
       return solveH(0, board.length);
     }
 
@@ -84,6 +94,7 @@ public class QueenBoard{
     public int countSolutions(){
       return 0;
     }
+    // helper method takes in the current column and the number of queens left
   private boolean solveH(int colStart, int numQueensLeft){
     // If reached edge of board, check if all queens fit
      if (colStart == board.length){
@@ -110,7 +121,7 @@ public class QueenBoard{
      }
      return false;
   }
-
+// add queen at specified position and mark her targets
   private boolean addQueen(int r, int c){
     // check if there is a queen or target, then add queen and targets
     if (board[r][c] == 0){
@@ -144,6 +155,7 @@ public class QueenBoard{
    return false;
 
   }
+  // remove queen at specified position and her marked targets
   private boolean removeQueen(int r, int c){
     // check if there is a queen
     if (board[r][c] == -1){
