@@ -72,7 +72,7 @@ public class QueenBoard{
     *@throws IllegalStateException when the board starts with any non-zero value
     */
     public boolean solve(){
-      return solveH(0, 0, board.length);
+      return solveH(0, board.length);
     }
 
     /**
@@ -82,29 +82,30 @@ public class QueenBoard{
     public int countSolutions(){
       return 0;
     }
-  private boolean solveH(int rowStart, int colStart, int numQueensLeft){
-    // return true if all queens fit on board
-    if (colStart >= board.length){
-      System.out.println("base case");
-      return numQueensLeft == 0;
-    }
-     // else loop through each row
+  private boolean solveH(int colStart, int numQueensLeft){
+    // If reached edge of board, check if all queens fit
+     if (colStart == board.length){
+       return numQueensLeft == 0;
+     }
      else{
-        for (int r = rowStart; r < numQueensLeft; r++){
-           for (int c = colStart; c < numQueensLeft; c++){
-           if (addQueen(r, c)){
-             System.out.println("added at "+r+" "+c);
-             return solveH(0, c+1, numQueensLeft -1);
-           }
-           else{
-             if (rowStart < board[r].length -1){
-               return solveH(rowStart+1, c, numQueensLeft);
-             }
-           }
-       }
+       // otherwise, loop through each row of the current column
+        for (int row = 0; row < board.length; row++){
+          // check if can add queen at current row, column and add
+          if (addQueen(row, colStart)){
+            // check if can SOLVE the rest of the board
+            if (solveH(colStart+1, numQueensLeft-1)){
+              return true;
+            }
+            else{
+              // otherwise, remove current queen and
+              // move down a row from the previous column
+              removeQueen(row, colStart);
+              return solveH(colStart-1, numQueensLeft);
+            }
+          }
+        }
      }
-     }
-       return false;
+     return false;
   }
 
   private boolean addQueen(int r, int c){
