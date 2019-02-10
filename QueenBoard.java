@@ -8,9 +8,9 @@ public class QueenBoard{
     testBoard.removeQueen(0,0);
     System.out.println(testBoard);
     testBoard.solve();*/
-    testBoard.addQueen(0,0);
+    testBoard.addQueen(1,3);
     System.out.println(testBoard.toStringDebug());
-    testBoard.removeQueen(0,0);
+    testBoard.removeQueen(1,3);
     System.out.println(testBoard.toStringDebug());
     System.out.println(testBoard.solve());
     System.out.println(testBoard);
@@ -116,13 +116,27 @@ public class QueenBoard{
     return true;
   }
   private boolean removeQueen(int r, int c){
-    board[r][c] = 0;
-    for (int i = 0; i < board.length; i++ ){
-      for (int j = 0; j < board[0].length; j++){
-        if ( c == j || Math.abs(r-i) == Math.abs(c-j)){
-          board[i][j] -= 1;
+    int row = r;
+    int col = c;
+    // check if there is a queen
+    if (board[r][c] == -1){
+      board[r][c] = 0;
+      // clear the targets of the queen's row
+      for (int i = 0; i < board[r].length; i++){
+        if (i != c && board[r][i] != -1){
+          board[r][i] -= 1;
         }
-      //  System.out.print(board[i][j] + ", ");
+      }
+      // move back on the board, along the diagonal
+      if (r != 0){
+        row = 0;
+        col = c-r;
+        System.out.println("row " + row + " col " + col);
+      }
+      // remove targets along the diagonal, excluding queen's original position
+      for (int i = 0; col + i < board[r].length; i++){
+        if (row != row + i){
+        board[row+i][col+i] -= 1;}
       }
     }
     return true;
