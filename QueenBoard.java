@@ -103,10 +103,7 @@ public class QueenBoard{
               // otherwise, remove current queen and
               // move down a row from the previous column
               removeQueen(row, colStart);
-              if (colStart >= 1){
-                System.out.println("row " + row + "colStart " + colStart);
-                 return solveH(colStart-1, numQueensLeft);
-               }
+
             }
           }
         }
