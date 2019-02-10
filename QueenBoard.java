@@ -85,20 +85,28 @@ public class QueenBoard{
   private boolean solveH(int rowStart, int colStart, int numQueensLeft){
     // return true if all queens fit on board
     if (colStart >= board.length){
+      System.out.println("base case");
       return numQueensLeft == 0;
     }
      // else loop through each row
      else{
        if (addQueen(rowStart, colStart)){
-         solveH(0, colStart + 1, numQueensLeft - 1);
-       }else{
-         if (rowStart < board.length){
-           removeQueen(rowStart, colStart);
-           solveH(rowStart + 1, colStart, numQueensLeft);
+         System.out.println("can add queen at "+ rowStart+", "+ colStart);
+         System.out.println("solveH at "+ 0+", "+ colStart+"+1, numQueensLeft (do -1) " +numQueensLeft);
+      return solveH(0, colStart + 1, numQueensLeft - 1);
+       }
+      else{
+        if (rowStart < board.length - 1){
+          removeQueen(rowStart, colStart);
+        System.out.println("remove queen at "+ rowStart+", "+ colStart);
+
+           System.out.println("solveH at "+ rowStart+" +1, "+ colStart+", numQueensLeft " +numQueensLeft);
+           return solveH(rowStart + 1, colStart, numQueensLeft);
          }
+        
+      }
        }
-       }
-    return false;
+       return false;
   }
 
   private boolean addQueen(int r, int c){
