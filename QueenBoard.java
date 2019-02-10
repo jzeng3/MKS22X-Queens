@@ -103,21 +103,39 @@ public class QueenBoard{
   }
 
   private boolean addQueen(int r, int c){
-    board[r][c] = -1;
-    // when queen is added, mark the spots that it could target
-    for (int i = 0; i < board.length; i++ ){
-      for (int j = 0; j < board[0].length; j++){
-        if (board[i][j] != -1 && (r == i || Math.abs(r-i) == Math.abs(c-j))){
-          board[i][j] += 1;
+    // check if there is a queen, then add targets
+    if (board[r][c] != -1){
+      // clear queen
+      board[r][c] = -1;
+      for (int i = 0; i < board[r].length; i++){
+        // this row, excluding queen
+        if (i != c){
+          board[r][i] += 1;
         }
-    //    System.out.print(board[i][j] + ", ");
+        // back a row, back a column
+        if ((r - i >= 0 && c - i >= 0) && board[r - i][c - i] >= 0){
+          board[r - i][c - i] += 1;
+        }
+        // back a row, forward a column
+        if ((r - i >= 0 && c + i < board.length) && board[r - i][c + i] >= 0){
+          board[r - i][c + i] += 1;
+        }
+        // forward a row, back a column
+        if ((r + i < board.length && c - i >= 0) && board[r + i][c - i] >= 0){
+          board[r + i][c - i] += 1;
+        }
+        // forward a row, forward a column
+        if ((r + i < board.length && c + i < board.length) && board[r + i][c + i] >= 0){
+          board[r + i][c + i] += 1;
+        }
       }
-    }
+
     return true;
+   }
+   return false;
+
   }
   private boolean removeQueen(int r, int c){
-    int row = r;
-    int col = c;
     // check if there is a queen
     if (board[r][c] == -1){
       // clear queen
