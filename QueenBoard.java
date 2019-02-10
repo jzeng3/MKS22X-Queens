@@ -90,22 +90,20 @@ public class QueenBoard{
     }
      // else loop through each row
      else{
-       if (addQueen(rowStart, colStart)){
-         System.out.println("can add queen at "+ rowStart+", "+ colStart);
-         System.out.println("solveH at "+ 0+", "+ colStart+"+1, numQueensLeft (do -1) " +numQueensLeft);
-      return solveH(0, colStart + 1, numQueensLeft - 1);
+        for (int r = rowStart; r < numQueensLeft; r++){
+           for (int c = colStart; c < numQueensLeft; c++){
+           if (addQueen(r, c)){
+             System.out.println("added at "+r+" "+c);
+             return solveH(0, c+1, numQueensLeft -1);
+           }
+           else{
+             if (rowStart < board[r].length -1){
+               return solveH(rowStart+1, c, numQueensLeft);
+             }
+           }
        }
-      else{
-        if (rowStart < board.length - 1){
-          removeQueen(rowStart, colStart);
-        System.out.println("remove queen at "+ rowStart+", "+ colStart);
-
-           System.out.println("solveH at "+ rowStart+" +1, "+ colStart+", numQueensLeft " +numQueensLeft);
-           return solveH(rowStart + 1, colStart, numQueensLeft);
-         }
-        
-      }
-       }
+     }
+     }
        return false;
   }
 
