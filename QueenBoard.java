@@ -8,13 +8,13 @@ public class QueenBoard{
     testBoard.removeQueen(0,0);
     System.out.println(testBoard);
     testBoard.solve();*/
-    testBoard.addQueen(1,2);
+  /*  testBoard.addQueen(1,2);
     System.out.println(testBoard.toStringDebug());
     testBoard.removeQueen(1,2);
-    System.out.println(testBoard.toStringDebug());
-    /*System.out.println(testBoard.solve());
-    System.out.println(testBoard);
     System.out.println(testBoard.toStringDebug());*/
+    System.out.println(testBoard.solve());
+    System.out.println(testBoard);
+    System.out.println(testBoard.toStringDebug());
   }
 
   private int[][] board;
@@ -84,27 +84,26 @@ public class QueenBoard{
     }
   private boolean solveH(int rowStart, int colStart, int numQueensLeft){
     // return true if all queens fit on board
-    if (rowStart >= board.length){
+    if (colStart >= board.length){
       return numQueensLeft == 0;
     }
      // else loop through each row
      else{
-       for (int i = 0; i < board.length; i++){
-         if (board[rowStart][colStart + i] == 0){
-           addQueen(rowStart, colStart + i);
-           solveH(rowStart + 1, colStart, numQueensLeft - 1);
+       if (addQueen(rowStart, colStart)){
+         solveH(0, colStart + 1, numQueensLeft - 1);
+       }else{
+         if (rowStart < board.length){
+           removeQueen(rowStart, colStart);
+           solveH(rowStart + 1, colStart, numQueensLeft);
          }
-
-         }
-
-
+       }
        }
     return false;
   }
 
   private boolean addQueen(int r, int c){
-    // check if there is a queen, then add targets
-    if (board[r][c] != -1){
+    // check if there is a queen or target, then add queen and targets
+    if (board[r][c] == 0){
       // clear queen
       board[r][c] = -1;
       for (int i = 0; i < board[r].length; i++){
