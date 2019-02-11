@@ -14,7 +14,7 @@ public class QueenBoard{
     System.out.println(testBoard.toStringDebug());
     testBoard.removeQueen(1,2);
     System.out.println(testBoard.toStringDebug());*/
-  //   System.out.println(testBoard.solve());
+  //  System.out.println(testBoard.solve());
     System.out.println(testBoard.countSolutions());
     System.out.println(testBoard);
     System.out.println(testBoard.toStringDebug());
@@ -93,6 +93,11 @@ public class QueenBoard{
     *@throws IllegalStateException when the board starts with any non-zero value
     */
     public int countSolutions(){
+      for (int i = 0; i < board.length; i++){
+        if (board[0][i] != 0){
+          throw new IllegalStateException();
+        }
+      }
       return countSolutionsH(0, 0);
     }
     // helper method takes in the current column and the number of queens left
@@ -119,29 +124,46 @@ public class QueenBoard{
      }
      return false;
   }
+  public static String go(int x,int y){
+      return ("\033[" + x + ";" + y + "H");
+  }
+  //And don't forget you can easily delay the printing if needed:
+   public static void wait(int millis){
+       try {
+           Thread.sleep(millis);
+       }
+       catch (InterruptedException e) {
+       }
+   }
   // helper method takes in the current column and the number of queens left
 private int countSolutionsH(int colStart, int numSolutions){
+/*  System.out.println(QueenBoard.go(1,1));
+  System.out.println(this);
+  QueenBoard.wait(1000);*/
   // If reached edge of board, check if all queens fit
    if (colStart == board.length){
      System.out.println("added to solutions "+ numSolutions);
-     numSolutions++;
+     return numSolutions;
    }
-   else{
+     System.out.println("num "+numSolutions);
      // otherwise, loop through each row of the current column
       for (int row = 0; row < board.length; row++){
+        System.out.println("row "+row+ " colSTart " +colStart);
         // check if can add queen at current row, column and add
         if (addQueen(row, colStart)){
           System.out.println("added queen to "+ row + " " + colStart);
           // check if can SOLVE the rest of the board
           if (solveH(colStart+1)){
               System.out.println("solved for queen");
-            numSolutions++;
-            removeQueen(row, colStart);
-             System.out.println("added to solutions in if statement"+ numSolutions);
+              // removeQueen(row, colStart);
+             countSolutionsH(colStart, numSolutions+1);
+             return numSolutions+1;
+
           }
           // remove current queen and
           // move down a row from the previous column
-        }
+            removeQueen(row, colStart);
+
       }
    }
    return numSolutions;
