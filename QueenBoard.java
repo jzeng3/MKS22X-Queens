@@ -3,7 +3,7 @@ public class QueenBoard{
   public static void main(String[] args){
     //QueenBoard testBoard = new QueenBoard(4);
     // QueenBoard testBoard = new QueenBoard(5);
-    QueenBoard testBoard = new QueenBoard(10);
+    QueenBoard testBoard = new QueenBoard(4);
   /*  System.out.println(testBoard);
     testBoard.addQueen(0,0);
     System.out.println(testBoard);
@@ -14,7 +14,8 @@ public class QueenBoard{
     System.out.println(testBoard.toStringDebug());
     testBoard.removeQueen(1,2);
     System.out.println(testBoard.toStringDebug());*/
-    System.out.println(testBoard.solve());
+  //   System.out.println(testBoard.solve());
+    System.out.println(testBoard.countSolutions());
     System.out.println(testBoard);
     System.out.println(testBoard.toStringDebug());
     try{System.out.println(testBoard.solve());
@@ -84,7 +85,7 @@ public class QueenBoard{
           throw new IllegalStateException();
         }
       }
-      return solveH(0, board.length);
+      return solveH(0);
     }
 
     /**
@@ -92,13 +93,13 @@ public class QueenBoard{
     *@throws IllegalStateException when the board starts with any non-zero value
     */
     public int countSolutions(){
-      return 0;
+      return countSolutionsH(0, 0);
     }
     // helper method takes in the current column and the number of queens left
-  private boolean solveH(int colStart, int numQueensLeft){
+  private boolean solveH(int colStart){
     // If reached edge of board, check if all queens fit
      if (colStart == board.length){
-       return numQueensLeft == 0;
+       return true;
      }
      else{
        // otherwise, loop through each row of the current column
@@ -107,20 +108,45 @@ public class QueenBoard{
           if (addQueen(row, colStart)){
             addQueen(row, colStart);
             // check if can SOLVE the rest of the board
-            if (solveH(colStart+1, numQueensLeft-1)){
+            if (solveH(colStart+1)){
               return true;
             }
-            else{
-              // otherwise, remove current queen and
-              // move down a row from the previous column
-              removeQueen(row, colStart);
-
-            }
+            // remove current queen and
+            // move down a row from the previous column
+            removeQueen(row, colStart);
           }
         }
      }
      return false;
   }
+  // helper method takes in the current column and the number of queens left
+private int countSolutionsH(int colStart, int numSolutions){
+  // If reached edge of board, check if all queens fit
+   if (colStart == board.length){
+     System.out.println("added to solutions "+ numSolutions);
+     numSolutions++;
+   }
+   else{
+     // otherwise, loop through each row of the current column
+      for (int row = 0; row < board.length; row++){
+        // check if can add queen at current row, column and add
+        if (addQueen(row, colStart)){
+          System.out.println("added queen to "+ row + " " + colStart);
+          // check if can SOLVE the rest of the board
+          if (solveH(colStart+1)){
+              System.out.println("solved for queen");
+            numSolutions++;
+            removeQueen(row, colStart);
+             System.out.println("added to solutions in if statement"+ numSolutions);
+          }
+          // remove current queen and
+          // move down a row from the previous column
+        }
+      }
+   }
+   return numSolutions;
+}
+
 // add queen at specified position and mark her targets
   private boolean addQueen(int r, int c){
     // check if there is a queen or target, then add queen and targets
@@ -187,6 +213,14 @@ public class QueenBoard{
     return true;
    }
    return false;
+ }
+ // clear and return board to original state
+ private void clear(){
+   for (int i = 0; i < board.length; i++){
+     for (int j = 0; j < board[0].length; j++){
+       board[i][j] = 0;
+     }
+   }
  }
 
 }
