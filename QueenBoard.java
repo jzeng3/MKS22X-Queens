@@ -3,7 +3,7 @@ public class QueenBoard{
   public static void main(String[] args){
     //QueenBoard testBoard = new QueenBoard(4);
     // QueenBoard testBoard = new QueenBoard(5);
-    QueenBoard testBoard = new QueenBoard(4);
+    QueenBoard testBoard = new QueenBoard(8);
   /*  System.out.println(testBoard);
     testBoard.addQueen(0,0);
     System.out.println(testBoard);
@@ -144,25 +144,23 @@ private int countSolutionsH(int colStart){
    if (colStart == board.length){
      return 1;
    }
+   int numSolutions = 0;
      // otherwise, loop through each row of the current column
       for (int row = 0; row < board.length; row++){
         System.out.println("row "+row+ " colSTart " +colStart);
         // check if can add queen at current row, column and add
         if (addQueen(row, colStart)){
-          System.out.println("added queen to "+ row + " " + colStart);
           // check if can SOLVE the rest of the board
-          if (solveH(colStart+1)){
-              System.out.println("solved for queen");
               // removeQueen(row, colStart);
-             return 1 + countSolutionsH(colStart+1);
+             numSolutions += countSolutionsH(colStart+1);
 
           }
           // remove current queen and
           // move down a row from the previous column
             removeQueen(row, colStart);
       }
-   }
-   return 0;
+
+   return numSolutions;
 }
 
 // add queen at specified position and mark her targets
