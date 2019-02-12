@@ -98,7 +98,7 @@ public class QueenBoard{
           throw new IllegalStateException();
         }
       }
-      return countSolutionsH(0, 0);
+      return countSolutionsH(0);
     }
     // helper method takes in the current column and the number of queens left
   private boolean solveH(int colStart){
@@ -136,16 +136,14 @@ public class QueenBoard{
        }
    }
   // helper method takes in the current column and the number of queens left
-private int countSolutionsH(int colStart, int numSolutions){
+private int countSolutionsH(int colStart){
 /*  System.out.println(QueenBoard.go(1,1));
   System.out.println(this);
   QueenBoard.wait(1000);*/
   // If reached edge of board, check if all queens fit
    if (colStart == board.length){
-     System.out.println("added to solutions "+ numSolutions);
-     return numSolutions;
+     return 1;
    }
-     System.out.println("num "+numSolutions);
      // otherwise, loop through each row of the current column
       for (int row = 0; row < board.length; row++){
         System.out.println("row "+row+ " colSTart " +colStart);
@@ -156,17 +154,15 @@ private int countSolutionsH(int colStart, int numSolutions){
           if (solveH(colStart+1)){
               System.out.println("solved for queen");
               // removeQueen(row, colStart);
-             countSolutionsH(colStart, numSolutions+1);
-             return numSolutions+1;
+             return 1 + countSolutionsH(colStart+1);
 
           }
           // remove current queen and
           // move down a row from the previous column
             removeQueen(row, colStart);
-
       }
    }
-   return numSolutions;
+   return 0;
 }
 
 // add queen at specified position and mark her targets
