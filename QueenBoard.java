@@ -6,7 +6,6 @@ public class QueenBoard{
       System.out.println("GENERATED " + i + " X " + i + " BOARD");
       System.out.println("SOLVEABLE: " + testBoard.solve());
       System.out.println(testBoard);
-      //  System.out.println("NUMBER OF SOLUTIONS: " + testBoard.countSolutions());
     }
     System.out.println("NUMBER OF SOLUTIONS FOR");
     for (int i = 0; i < 15; i++){
@@ -82,6 +81,11 @@ public class QueenBoard{
 
   // helper method takes in the current column
   private boolean solveH(int colStart){
+    if (board.length == 4){
+    System.out.println(QueenBoard.go(20,1));
+    System.out.println(this);
+    QueenBoard.wait(500);
+  }
     // If reached edge of board, return true (board is solved)
     if (colStart == board.length){
       return true;
@@ -120,9 +124,6 @@ public class QueenBoard{
 
   // helper method takes in the current column
   private int countSolutionsH(int colStart){
-    /*  System.out.println(QueenBoard.go(1,1));
-    System.out.println(this);
-    QueenBoard.wait(1000);*/
     // If reached edge of board, solution counts as 1
     if (colStart == board.length){
       return 1;
